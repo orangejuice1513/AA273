@@ -15,7 +15,7 @@ one_vec = ones(2,1)
 
 # recursive bayes 
 for i in 1:98 #98 negative tests 
-    pi_t = M_n * T * pi_t / (one_vec.T * M_n * T * pi_t) 
+    global pi_t = M_n * T * pi_t / (one_vec' * M_n * T * pi_t) 
 end 
 
 # 99th day is positive 
