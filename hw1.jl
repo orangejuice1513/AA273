@@ -4,8 +4,8 @@ using LinearAlgebra
 # intialization 
 infection_rate = 0.001
 recovery_rate = 0.05 
-T = [ 1 - infection_rate recovery_rate;
-      infection_rate 1 - recovery_rate]
+T = [ (1 - infection_rate) recovery_rate;
+      infection_rate (1 - recovery_rate)]
 M_n = [0.9 0;
        0 0.01] # measurement likelihood for negative test 
 M_p = [0.1 0;
