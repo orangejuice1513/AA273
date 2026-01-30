@@ -61,6 +61,7 @@ plt.title('Drone Trajectory')
 plt.legend() 
 plt.savefig("drone_trajectory.png", dpi=300, bbox_inches="tight")
 plt.show()
+print("finished!")
 
 
 
