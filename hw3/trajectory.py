@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 
 # system matrix definitions 
-N = 1000
+N = 50
 t = 0
 A = np.block([
     [np.eye(2), np.eye(2)],
@@ -34,7 +34,7 @@ trajectory[0] = x_t.ravel() #add the first datapoint
 measurements = np.zeros((N+1, 2)) #stores gps measurements 
 
 # trajectory simulation 
-for i in range(N):
+for t in range(N):
     # take noise samples 
     W_t = np.random.multivariate_normal(mean=np.zeros(2), cov=Q).reshape(2, 1)
     V_t = np.random.multivariate_normal(mean=np.zeros(2), cov=R).reshape(2, 1)
@@ -43,8 +43,9 @@ for i in range(N):
     x_t = A @ x_t + B @ u_t + np.vstack((np.zeros((2,1)), W_t)) 
     y_t = C @ x_t + V_t 
 
-    trajectory[i+1] = x_t.ravel()
-    measurements[i+1] = y_t.ravel()
+    trajectory[t+1] = x_t.ravel()
+    measurements[t+1] = y_t.ravel() 
+
 
 # plot some example trajectories 
 p1 = trajectory[:, 0]
@@ -52,15 +53,15 @@ p2 = trajectory[:, 1]
 y1 = measurements[:, 0]
 y2 = measurements[:, 1]
 
-plt.plot(p1, p2, '-m', linewidth=2, label='true trajectory')
-plt.scatter(y1, y2, label='gps measurements')
-plt.xlabel('x position (m)')
-plt.ylabel('y position (m)')
-plt.title('Drone Trajectory')
-plt.legend() 
-plt.savefig("drone_trajectory.png", dpi=300, bbox_inches="tight")
-plt.show()
-print("finished!")
+# plt.plot(p1, p2, '-m', linewidth=2, label='true trajectory')
+# plt.scatter(y1, y2, label='gps measurements')
+# plt.xlabel('x position (m)')
+# plt.ylabel('y position (m)')
+# plt.title('Drone Trajectory')
+# plt.legend() 
+# plt.savefig("drone_trajectory.png", dpi=300, bbox_inches="tight")
+# plt.show()
+# print("finished!")
 
 
 
