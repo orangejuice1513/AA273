@@ -1,5 +1,4 @@
 # simulate trajectory and measurement process of drone 
-from turtle import position
 import numpy as np 
 import matplotlib.pyplot as plt 
 
@@ -42,10 +41,10 @@ for i in range(N):
 
     # propogate forward
     x_t = A @ x_t + B @ u_t + np.vstack((np.zeros((2,1)), W_t)) 
-    y_t = C @ x_t + V_t
+    y_t = C @ x_t + V_t 
 
     trajectory[i+1] = x_t.ravel()
-    measurements[i:1] = y_t.ravel()
+    measurements[i+1] = y_t.ravel()
 
 # plot some example trajectories 
 p1 = trajectory[:, 0]
@@ -54,7 +53,7 @@ y1 = measurements[:, 0]
 y2 = measurements[:, 1]
 
 plt.plot(p1, p2, '-m', linewidth=2, label='true trajectory')
-plt.scatter(y1, y2, s=10, alpha=0.6, label='gps measurements')
+plt.scatter(y1, y2, label='gps measurements')
 plt.xlabel('x position (m)')
 plt.ylabel('y position (m)')
 plt.title('Drone Trajectory')
