@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 # system matrix definitions 
 N = 50
-t = 0
 A = np.block([
     [np.eye(2), np.eye(2)],
     [np.zeros((2, 2)), np.eye(2)]
@@ -18,10 +17,6 @@ C = np.block([
 ])
 Q = np.eye(2) #cov(W)
 R = 9 * np.eye(2) #cov(V)
-u_t = -2.5 * np.array([ #control
-    [np.cos(0.05 * t)], 
-    [np.sin(0.05 * t)]
-])
 
 # initial conditions
 p_t = np.array([[1000], [0]]) #initial position 
@@ -35,6 +30,11 @@ measurements = np.zeros((N+1, 2)) #stores gps measurements
 
 # trajectory simulation 
 for t in range(N):
+    # control
+    u_t = -2.5 * np.array([
+        [np.cos(0.05 * t)], 
+        [np.sin(0.05 * t)]
+    ])
     # take noise samples 
     W_t = np.random.multivariate_normal(mean=np.zeros(2), cov=Q).reshape(2, 1)
     V_t = np.random.multivariate_normal(mean=np.zeros(2), cov=R).reshape(2, 1)

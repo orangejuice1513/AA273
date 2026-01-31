@@ -32,6 +32,11 @@ true_path[0] = x_true.ravel() #add the first datapoint
 
 # implement kalman filter 
 for t in range(N):
+    u_t = -2.5 * np.array([ #control
+        [np.cos(0.05 * t)], 
+        [np.sin(0.05 * t)]
+    ])
+
     W_t = np.random.multivariate_normal(np.zeros(4), Q).reshape(4, 1)
     V_t = np.random.multivariate_normal(np.zeros(2), R).reshape(2, 1)
     x_true = A @ x_true + B @ u_t + W_t # true state
@@ -54,19 +59,19 @@ for t in range(N):
     true_path[t+1] = x_true.ravel() 
 
     # plot 95% error ellipses for position 
-    plot_ellipse(mu_t[0:2].ravel(), cov_t[0:2, 0:2], 0.95)
+    # plot_ellipse(mu_t[0:2].ravel(), cov_t[0:2, 0:2], 0.95)
 
     # plot 95% error ellipses for velocity 
-    # if t % 6 == 0:
-    #     p = mu_t[0:2].ravel()
-    #     v = mu_t[2:4].ravel()
-    #     v_tip_scaled = p + (v * v_scale) #scale vector so we can see
-    #     v_cov_scaled = cov_t[2:4, 2:4] * (v_scale**2)
-    #     plt.quiver(p[0], p[1], v[0]*v_scale, v[1]*v_scale, 
-    #                angles='xy', scale_units='xy', scale=1, 
-    #                color='blue', alpha=0.6, width=0.003, 
-    #                label='Velocity' if t==0 else "") 
-    #     plot_ellipse(v_tip_scaled, v_cov_scaled, 0.95)
+    if t % 6 == 0:
+        p = mu_t[0:2].ravel()
+        v = mu_t[2:4].ravel()
+        v_tip_scaled = p + (v * v_scale) #scale vector so we can see
+        v_cov_scaled = cov_t[2:4, 2:4] * (v_scale**2)
+        plt.quiver(p[0], p[1], v[0]*v_scale, v[1]*v_scale, 
+                   angles='xy', scale_units='xy', scale=1, 
+                   color='blue', alpha=0.6, width=0.003, 
+                   label='Velocity' if t==0 else "") 
+        plot_ellipse(v_tip_scaled, v_cov_scaled, 0.95)
 
 # plot some example trajectories 
 p1 = k_trajectory[:, 0]
@@ -79,10 +84,10 @@ plt.plot(x1, x2, '-b', linewidth=2, label='true path')
 plt.plot()
 plt.xlabel('x position (m)')
 plt.ylabel('y position (m)')
-plt.title('Kalman Filter State Estimation of Drone Trajectory with Position Ellipses')
+plt.title('Kalman Filter State Estimation of Drone Trajectory with Velocity Ellipses')
 plt.legend() 
 plt.axis('equal') 
-plt.savefig("kalman_drone_trajectory_with_p_ellipses.png", dpi=300, bbox_inches="tight")
+plt.savefig("kalman_drone_trajectory_with_v_ellipses.png", dpi=300, bbox_inches="tight")
 plt.show()
 print("finished!")
 

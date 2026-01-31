@@ -36,6 +36,10 @@ true_path[0] = x_true.ravel() #add the first datapoint
 
 # implement kalman filter 
 for t in range(N):
+    u_t = -2.5 * np.array([
+        [np.cos(0.05 * t)], 
+        [np.sin(0.05 * t)]
+    ])
     W_t = np.random.multivariate_normal(np.zeros(4), Q).reshape(4, 1)
     V_t = np.random.multivariate_normal(np.zeros(2), R).reshape(2, 1)
     x_true = A @ x_true + B @ u_t + W_t # true state
@@ -68,7 +72,7 @@ for t in range(N):
         v_cov_scaled = cov_t[2:4, 2:4] * (v_scale**2)
         plt.quiver(p[0], p[1], v[0]*v_scale, v[1]*v_scale, 
                    angles='xy', scale_units='xy', scale=1, 
-                   color='blue', alpha=0.6, width=0.003, 
+                   color='pink', alpha=0.6, width=0.003, 
                    label='Velocity' if t==0 else "") 
         plot_ellipse(v_tip_scaled, v_cov_scaled, 0.95)
 
@@ -83,10 +87,10 @@ plt.plot(x1, x2, '-b', linewidth=2, label='true path')
 plt.plot()
 plt.xlabel('x position (m)')
 plt.ylabel('y position (m)')
-plt.title('Kalman Filter State Estimation of Drone Trajectory with Velocity Ellipses')
+plt.title('Kalman Filter State Estimation of Drone Trajectory with Position Ellipses')
 plt.legend() 
 plt.axis('equal') 
-plt.savefig("p5_velocity_ellipses.png", dpi=300, bbox_inches="tight")
+plt.savefig("p5_position_ellipses.png", dpi=300, bbox_inches="tight")
 plt.show()
 print("finished!")
 
